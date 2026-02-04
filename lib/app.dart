@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
 }
 
 final GoRouter _router = GoRouter(
-  initialLocation: '/login', // Start at Login for this flow
+  // initialLocation: '/login',
+  initialLocation: '/', // Start at Login for this flow
   routes: [
     GoRoute(
       path: '/',

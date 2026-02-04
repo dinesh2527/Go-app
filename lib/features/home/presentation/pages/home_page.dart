@@ -4,6 +4,7 @@ import '../../../../injection_container.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
+import '../../../menu/presentation/widgets/menu_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _hasLoaded = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -31,7 +33,13 @@ class _HomePageState extends State<HomePage> {
     });
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color(0xFFF5F5F5),
+      drawer: const MenuDrawer(
+        userName: 'Sri Karan',
+        phoneNumber: '+91 9876543216',
+        rating: 4.8,
+      ),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.5,
@@ -53,7 +61,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: IconButton(
               icon: const Icon(Icons.menu, color: Colors.black, size: 24),
-              onPressed: () {},
+              onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               padding: EdgeInsets.zero,
             ),
           ),
