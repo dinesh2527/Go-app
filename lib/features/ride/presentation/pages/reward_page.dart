@@ -13,17 +13,15 @@ class CoinRewardScreen extends StatelessWidget {
     // Force status bar style if needed
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
-    // Configuration for the visual center
-    // 0.4 (40% height) places it slightly above distinct center,
-    // matching the "Star Burst" look.
-    const double kBurstCenterYRatio = 0.4;
-    const double kCoinSize = 140.0;
-
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
           final double w = constraints.maxWidth;
           final double h = constraints.maxHeight;
+
+          // Responsive coin size
+          final double kCoinSize = (h * 0.2).clamp(100.0, 160.0);
+          final double kBurstCenterYRatio = 0.4;
 
           // 1. Calculate the shared center point
           final Offset centerPoint = Offset(w / 2, h * kBurstCenterYRatio);
@@ -60,21 +58,18 @@ class CoinRewardScreen extends StatelessWidget {
               // Positioned relative to the coin bottom
               // -------------------------------------------------------
               Positioned(
-                top:
-                    centerPoint.dy +
-                    (kCoinSize / 2) +
-                    30, // 30px padding below coin
+                top: centerPoint.dy + (kCoinSize / 2) + 20,
                 left: 20,
                 right: 20,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Text(
                       "You’ve received 10 coins for\nthis trip.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 22,
+                        fontSize: (h < 600) ? 18 : 22, // Responsive font
                         fontWeight: FontWeight.w800,
                         height: 1.2,
                         letterSpacing: -0.5,
@@ -87,22 +82,24 @@ class CoinRewardScreen extends StatelessWidget {
 
               // -------------------------------------------------------
               // Layer 4: Ticket Card
-              // Pinned to bottom
+              // Pinned to bottom with SafeArea
               // -------------------------------------------------------
-              const Positioned(
-                bottom: 50,
+              Positioned(
+                bottom: 20,
                 left: 20,
                 right: 20,
-                child: _TicketRewardCard(),
+                child: SafeArea(top: false, child: const _TicketRewardCard()),
               ),
 
               // Back Button (Optional safety)
               Positioned(
-                top: 50,
+                top: 0,
                 left: 16,
-                child: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
-                  onPressed: () => Navigator.of(context).pop(),
+                child: SafeArea(
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
                 ),
               ),
             ],

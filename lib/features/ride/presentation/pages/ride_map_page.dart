@@ -141,20 +141,22 @@ class _RideMapScreenState extends State<RideMapScreen> {
           ),
 
           Positioned(
-            top: 45,
+            top: 0,
             left: 16,
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pop(context),
+            child: SafeArea(
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                ),
               ),
             ),
           ),
 
           Positioned(
             right: 16,
-            bottom: 220,
+            bottom: 300,
             child: FloatingActionButton(
               backgroundColor: Colors.white,
               onPressed: _moveToCurrentLocation,
@@ -163,10 +165,8 @@ class _RideMapScreenState extends State<RideMapScreen> {
           ),
 
           if (currentStep == RideStep.selectRide)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Positioned(bottom: 200, child: _goCoinsToggle()),
-            ),
+            Positioned(left: 16, bottom: 300, child: _goCoinsToggle()),
+
           Align(
             alignment: Alignment.bottomCenter,
             child: AnimatedSwitcher(

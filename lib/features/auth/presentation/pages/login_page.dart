@@ -82,114 +82,127 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(Icons.headset_mic, size: 16),
-                        SizedBox(width: 4),
-                        Text("Help", style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 40),
-
-                isOtpScreen ? _otpView() : _loginView(),
-
-                const Spacer(),
-
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: isOtpScreen
-                        ? (isOtpValid
-                              ? () {
-                                  context.read<OtpBloc>().add(
-                                    VerifyOtp(enteredOtp.trim()),
-                                  );
-                                }
-                              : null)
-                        : (isPhoneValid(phoneController.text)
-                              ? () {
-                                  setState(() => isOtpScreen = true);
-                                  startResendTimer();
-                                }
-                              : null),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          (isOtpScreen
-                              ? isOtpValid
-                              : isPhoneValid(phoneController.text))
-                          ? Colors.orange
-                          : Colors.grey.shade300,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: BlocBuilder<OtpBloc, OtpState>(
-                      builder: (context, state) {
-                        if (state is OtpLoading) {
-                          return const CircularProgressIndicator(
-                            color: Colors.white,
-                          );
-                        }
-                        return Text(isOtpScreen ? "Next" : "Proceed");
-                      },
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                if (!isOtpScreen)
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        text: isSignin
-                            ? "Don't have an account? "
-                            : "Already have an account? ",
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13,
-                        ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextSpan(
-                            text: isSignin ? "Create Account" : "Sign in",
-                            style: const TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.w500,
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(Icons.headset_mic, size: 16),
+                                  SizedBox(width: 4),
+                                  Text("Help", style: TextStyle(fontSize: 12)),
+                                ],
+                              ),
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                setState(() {
-                                  isSignin = !isSignin;
-                                });
-                              },
                           ),
+
+                          const SizedBox(height: 40),
+
+                          isOtpScreen ? _otpView() : _loginView(),
+
+                          const Spacer(),
+
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: isOtpScreen
+                                  ? (isOtpValid
+                                        ? () {
+                                            context.read<OtpBloc>().add(
+                                              VerifyOtp(enteredOtp.trim()),
+                                            );
+                                          }
+                                        : null)
+                                  : (isPhoneValid(phoneController.text)
+                                        ? () {
+                                            setState(() => isOtpScreen = true);
+                                            startResendTimer();
+                                          }
+                                        : null),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    (isOtpScreen
+                                        ? isOtpValid
+                                        : isPhoneValid(phoneController.text))
+                                    ? Colors.orange
+                                    : Colors.grey.shade300,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: BlocBuilder<OtpBloc, OtpState>(
+                                builder: (context, state) {
+                                  if (state is OtpLoading) {
+                                    return const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    );
+                                  }
+                                  return Text(isOtpScreen ? "Next" : "Proceed");
+                                },
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          if (!isOtpScreen)
+                            Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: isSignin
+                                      ? "Don't have an account? "
+                                      : "Already have an account? ",
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 13,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: isSignin
+                                          ? "Create Account"
+                                          : "Sign in",
+                                      style: const TextStyle(
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          setState(() {
+                                            isSignin = !isSignin;
+                                          });
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
                   ),
-
-                const SizedBox(height: 20),
-              ],
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

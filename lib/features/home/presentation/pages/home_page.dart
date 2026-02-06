@@ -158,6 +158,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             // Text content
             Expanded(
+              flex: 6,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -224,18 +225,18 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            Container(
-              width: 180,
-              height: 150,
-              alignment: Alignment.bottomRight,
-              child: Transform(
-                alignment: Alignment.bottomCenter,
-                transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0),
-                child: Image.asset(
-                  'assets/images/scooter_ride.png',
-                  height: 200,
-                  width: 200,
-                  fit: BoxFit.contain,
+            Flexible(
+              flex: 4,
+              child: Container(
+                alignment: Alignment.bottomRight,
+                child: Transform(
+                  alignment: Alignment.bottomCenter,
+                  transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0),
+                  child: Image.asset(
+                    'assets/images/scooter_ride.png',
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
